@@ -45,7 +45,7 @@ export class AuthService {
     })
 
     const match = await Promise.any(
-      links.map(async (link) =>
+      links.map(async (link: any) =>
         (await argon2.verify(link.token, token)) ? link : null,
       ),
     ).catch(() => null)
