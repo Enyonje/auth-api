@@ -13,7 +13,7 @@ COPY src ./src
 RUN npm run build
 
 # Runtime stage
-FROM node:20-alpine
+FROM node:20-slim
 WORKDIR /app
 
 COPY package*.json ./
