@@ -32,6 +32,7 @@
     "ioredis": "^5.8.2",
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^7.0.11",
+    "openssl": "^2.0.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "prisma": "^4.15.0",
