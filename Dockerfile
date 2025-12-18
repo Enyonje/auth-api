@@ -1,19 +1,25 @@
-FROM node:18-slim
-
-WORKDIR /usr/src/app
-
-# Install only required system deps
-RUN apt-get update \
-  && apt-get install -y openssl \
-  && rm -rf /var/lib/apt/lists/*
+# Build stage
+FROM node:20-alpine AS builder
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci
 
-COPY . .
-
-RUN npm run build
+COPY prisma ./prisma
 RUN npx prisma generate
 
-EXPOSE 3000
-CMD ["npm", "run", "start"]
+COPY tsconfig.json ./
+COPY src ./src
+RUN npm run build
+
+# Runtime stage
+FROM node:20-alpine
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/dist ./dist
+
+CMD ["node", "dist/main.js"]
