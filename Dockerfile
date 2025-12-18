@@ -1,5 +1,5 @@
 # Build stage
-FROM node:20-alpine AS builder
+FROM node:lts-slim AS builder
 WORKDIR /app
 
 COPY package*.json ./
@@ -13,7 +13,7 @@ COPY src ./src
 RUN npm run build
 
 # Runtime stage
-FROM node:20-slim
+FROM node:lts-slim
 WORKDIR /app
 
 COPY package*.json ./
